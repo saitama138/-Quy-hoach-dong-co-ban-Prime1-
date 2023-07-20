@@ -1,0 +1,147 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage[blue]{tcolorbox}
+\usepackage[utf8]{vietnam}
+\documentclass{article}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes}
+
+\lstset{
+  language=C++,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  tabsize=2,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  showstringspaces=false,
+}
+
+\title{Quy hoạch động cơ bản: Prime 1}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Đề bài}
+
+Cho số nguyên dương $N$, hãy đếm xem trong đoạn từ $0$ tới $N$ có bao nhiêu số nguyên tố.
+
+\textbf{Hướng dẫn}:
+\begin{enumerate}
+  \item \textbf{Bước 1:} Sàng số nguyên tố.
+  \item \textbf{Bước 2:} Gọi $F[i]$ là số lượng các số nguyên tố từ $0$ tới $i$, xây dựng mảng $F[i]$ sau khi sàng.
+\end{enumerate}
+
+\section*{Input Format}
+
+\begin{verbatim}
+- Dòng 1 là số bộ test T
+- T dòng tiếp theo mỗi dòng là 1 số nguyên không âm $N$
+\end{verbatim}
+
+\section*{Constraints}
+
+\begin{verbatim}
+- 1 <= T <= 10000
+- 0 <= N <= $10^6$
+\end{verbatim}
+
+\section*{Output Format}
+
+Đưa ra kết quả của mỗi test trên 1 dòng.
+\\
+\\
+\begin{minipage}[t]{0.45\textwidth}
+\begin{tcolorbox}[colback=green!10!white,colframe=green!50!black,title=Sample Input 0]
+\begin{verbatim}
+5
+39
+68
+26
+87
+6
+\end{verbatim}
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\begin{tcolorbox}[colback=red!10!white,colframe=red!50!black,title=Sample Output 0]
+\begin{verbatim}
+12
+19
+9
+23
+3
+\end{verbatim}
+\end{tcolorbox}
+\end{minipage}
+
+
+\section*{C++ Code}
+
+\begin{tcolorbox}[colback=blue!10!white,colframe=blue!50!black,title=\textbf{C++ Code}]
+\begin{lstlisting}
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+bool prime[1000001];
+int F[1000001];
+
+void sang();
+int main() {
+  int T;
+  cin >> T;
+
+  sang();
+  while(T--) {
+    int N;
+    cin >> N;
+    cout << F[N] << endl;
+  }
+  return 0;
+}
+
+void sang() {
+  for(int i = 0; i < 1000001; i++) {
+    prime[i] = true;
+  }
+
+  prime[0] = false;
+  prime[1] = false;
+
+  for(int i = 2; i <= sqrt(1000001); i++) {
+    if(prime[i] == true) {
+      for(int j = i * i; j < 1000001; j+= i) {
+        prime[j] = false;
+      }
+    }
+  }
+
+  F[0] = 0;
+  for(int i = 1; i < 1000001; i++) {
+    if(prime[i] == true) {
+      F[i] = F[i - 1] + 1;
+    }
+    else {
+      F[i] = F[i - 1];
+    }
+  }
+}
+\end{lstlisting}
+\end{tcolorbox}
+
+\end{document}
